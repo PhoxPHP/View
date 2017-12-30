@@ -1,12 +1,12 @@
 <?php
 /**
-* @package 	Package\PHView\Layout
+* @package 	Kit\PHView\Layout
 * @author 	Peter Taiwo
 */
 
-namespace Package\View\Engines\PHView;
+namespace Kit\View\Engines\PHView;
 
-use Package\View\Engines\PHView\View;
+use Kit\View\Engines\PHView\View;
 
 class Layout
 {
@@ -36,7 +36,7 @@ class Layout
 	protected 	$viewOutput;
 
 	/**
-	* @param 	$view Package\View\Engines\PHView\View
+	* @param 	$view Kit\View\Engines\PHView\View
 	* @param 	$layoutFile <String>
 	* @access 	public
 	* @return 	void

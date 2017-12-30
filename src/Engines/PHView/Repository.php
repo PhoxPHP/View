@@ -1,14 +1,14 @@
 <?php
 /**
-* @package 	Package\PHView\View
+* @package 	Kit\PHView\View
 * @author 	Peter Taiwo
 */
 
-namespace Package\View\Engines\PHView;
+namespace Kit\View\Engines\PHView;
 
-use Package\View\Engines\PHView\View;
-use Package\View\Engines\PHView\Config;
-use Package\View\Engines\PHView\Exceptions\FileNotFoundException;
+use Kit\View\Engines\PHView\View;
+use Kit\View\Engines\PHView\Config;
+use Kit\View\Engines\PHView\Exceptions\FileNotFoundException;
 
 class Repository
 {
@@ -99,14 +99,21 @@ class Repository
 	public function getPathWith(String $with, String $extension='html', Bool $checkFile=false)
 	{
 		if (gettype($extension) !== 'string') {
+
 			$extension = Config::get('extension');
+		
 		}
 
 		$extension = '.' . $extension;
+		
 		if ($checkFile == true) {
+		
 			if (!file_exists($this->directory . $with . $extension)) {
+		
 				throw new FileNotFoundException(sprintf('File %s does not exist.', $this->directory . $with . $extension));
+		
 			}
+		
 		}
 
 		return $this->directory . $with . $extension;

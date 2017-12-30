@@ -2,13 +2,14 @@
 #########################################
 # This file is part of phoxphp framework.
 #########################################
-namespace Package\View\Engines\Lite\Mixins;
+namespace Kit\View\Engines\Lite\Mixins;
 
-use Package\View\Engines\Lite\Factory;
-use Package\View\Engines\Lite\Compiler;
-use Package\View\Engines\Lite\Mixins\Interfaces\MixinInterface;
+use Kit\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\Compiler;
+use Kit\View\Engines\Lite\Mixins\Interfaces\MixinInterface;
 
-class ElseMixin implements MixinInterface {
+class ElseMixin implements MixinInterface
+{
 
 	/**
 	* @var 		$factory
@@ -40,7 +41,8 @@ class ElseMixin implements MixinInterface {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct(Factory $factory, $template, $skipFileToString=false) {
+	public function __construct(Factory $factory, $template, $skipFileToString=false)
+	{
 		$this->factory = $factory;
 		$this->template = $template;
 		$this->skipFileToString = $skipFileToString;
@@ -50,7 +52,8 @@ class ElseMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Boolean
 	*/
-	public function register() {
+	public function register()
+	{
 		return true;
 	}
 
@@ -59,13 +62,20 @@ class ElseMixin implements MixinInterface {
 	* @access 	protected
 	* @return 	Boolean
 	*/
-	protected function hasElse() {
+	protected function hasElse()
+	{
 		$template = ($this->skipFileToString == true) ? $this->template : $this->factory->getTemplateContent($this->template);
+	
 		$preg = preg_match_all("/@else@/s", $template, $matches);
+	
 		if (!$preg) {
+	
 			return false;
+	
 		}
+	
 		$this->directives = $matches;
+	
 		return true;
 	}
 
@@ -74,7 +84,8 @@ class ElseMixin implements MixinInterface {
 	* @access 	protected
 	* @return 	String
 	*/
-	protected function read($directive='') {
+	protected function read($directive='')
+	{
 		return '<?php else: ?>';
 	}
 
@@ -82,14 +93,20 @@ class ElseMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getOutput() {
+	public function getOutput()
+	{
 		$compiledArray = array();
 
 		if ($this->hasElse()) {
+	
 			foreach($this->directives[0] as $i => $directive) {
+	
 				$directiveCode = $this->directives[0][$i];
+	
 				Compiler::addCustomOutput($directive, htmlentities($this->read($directiveCode)));
+	
 			}
+	
 		}
 
 		return $compiledArray;

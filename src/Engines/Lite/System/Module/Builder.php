@@ -1,9 +1,10 @@
 <?php
-namespace Package\View\Engines\Lite\System\Module;
+namespace Kit\View\Engines\Lite\System\Module;
 
-use Package\View\Engines\Lite\System\Module\Module;
+use Kit\View\Engines\Lite\System\Module\Module;
 
-class Builder {
+class Builder
+{
 
 	/**
 	* @var 		$path
@@ -21,7 +22,8 @@ class Builder {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct(Module $module) {
+	public function __construct(Module $module)
+	{
 		$this->module = $module;
 	}
 
@@ -32,7 +34,8 @@ class Builder {
 	* @access 	public
 	* @return 	void
 	*/
-	public function buildModule($path='') {
+	public function buildModule($path='')
+	{
 		$this->path = $path;
 	}
 

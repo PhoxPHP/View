@@ -2,15 +2,16 @@
 ########################################################
 # This file is part of phoxphp framework template files.
 ########################################################
-namespace Package\View\Engines\Lite\Mixins;
+namespace Kit\View\Engines\Lite\Mixins;
 
-use Package\View\Engines\Lite\Factory;
-use Package\View\Engines\Lite\Compiler;
-use Package\View\Engines\Lite\Resolver;
-use Package\View\Engines\Lite\Parsers\FilterParser;
-use Package\View\Engines\Lite\Mixins\Interfaces\MixinInterface;
+use Kit\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\Compiler;
+use Kit\View\Engines\Lite\Resolver;
+use Kit\View\Engines\Lite\Parsers\FilterParser;
+use Kit\View\Engines\Lite\Mixins\Interfaces\MixinInterface;
 
-class BlockMixin implements MixinInterface {
+class BlockMixin implements MixinInterface
+{
 
 	/**
 	* @var 		$factory
@@ -49,7 +50,8 @@ class BlockMixin implements MixinInterface {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct(Factory $factory, $template, $skipFileToString=false) {
+	public function __construct(Factory $factory, $template, $skipFileToString=false)
+	{
 		$this->factory = $factory;
 		$this->template = $template;
 		$this->skipFileToString = $skipFileToString;
@@ -59,7 +61,8 @@ class BlockMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Boolean
 	*/
-	public function register() {
+	public function register()
+	{
 		return true;
 	}
 
@@ -67,7 +70,8 @@ class BlockMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Object
 	*/
-	protected function filter() : FilterParser {
+	protected function filter() : FilterParser
+	{
 		return new FilterParser($this->factory);
 	}
 
@@ -77,12 +81,17 @@ class BlockMixin implements MixinInterface {
 	* @access 	protected
 	* @return 	Boolean
 	*/
-	protected function hasBlock($template='') {
+	protected function hasBlock($template='')
+	{
 		$template = ($this->skipFileToString == true) ? $this->template : $this->factory->getTemplateContent($this->template);
+
 		if (!preg_match_all("/@block\((\"|')(.*?)(\"|')\)(.*?)@endblock/s", $template, $matches)) {
+		
 			return false;
 		}
+
 		$this->blocks = $matches;
+		
 		return true;
 	}
 
@@ -90,9 +99,11 @@ class BlockMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getOutput() {
+	public function getOutput()
+	{
 		$compiledArray = array();
 		$blockData = array();
+	
 		if ($this->hasBlock()) {
 
 			foreach($this->blocks[0] as $i => $directive) {
@@ -104,12 +115,13 @@ class BlockMixin implements MixinInterface {
 				$blockData['directives'][] = $directive;
 				$blockData['content'][] = $content;
 
-				// We are using this method to resolve conflicts when blocks have the same data.
 				$this->factory->pushToTemplateTree($this->template, 'block:data', $blockData);
+				
 				// Deleting block from template....
 				Compiler::addCustomOutput($directive, "");
 			}
 		}
+
 		return $compiledArray;
 	}
 

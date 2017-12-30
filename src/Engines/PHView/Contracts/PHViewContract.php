@@ -1,12 +1,12 @@
 <?php
 /**
-* @package 	Package\PHView\View
+* @package 	Kit\PHView\View
 * @author 	Peter Taiwo
 */
 
-namespace Package\View\Engines\PHView\Contracts;
+namespace Kit\View\Engines\PHView\Contracts;
 
-use Package\View\Engines\PHView\View;
+use Kit\View\Engines\PHView\View;
 
 interface PHViewContract
 {
@@ -17,7 +17,7 @@ interface PHViewContract
 	*
 	* @param 	$repository
 	* @access 	public
-	* @return 	Package\View\Engines\PHView\View
+	* @return 	Kit\View\Engines\PHView\View
 	*/
 	public function setRepository(String $repository) : View;
 
@@ -27,7 +27,7 @@ interface PHViewContract
 	* @param 	$name <String>
 	* @param 	$value <Mixed>
 	* @access 	public
-	* @return 	Package\View\Engines\PHView\View
+	* @return 	Kit\View\Engines\PHView\View
 	*/
 	public function setVariable(String $key, $value) : View;
 
@@ -42,11 +42,11 @@ interface PHViewContract
 
 	/**
 	* Set layout. This method accepts either a string (name of the layout to use)
-	* or an instance of Package\View\Engines\PHView\Layout.
+	* or an instance of Kit\View\Engines\PHView\Layout.
 	*
-	* @param 	$layout <String> | <Package\View\Engines\PHView\Layout>
+	* @param 	$layout <String> | <Kit\View\Engines\PHView\Layout>
 	* @access 	public
-	* @return 	Package\View\Engines\PHView\View
+	* @return 	Kit\View\Engines\PHView\View
 	*/
 	public function setLayout($layout) : View;
 
@@ -56,7 +56,7 @@ interface PHViewContract
 	* @param 	$layout <String>
 	* @param 	$view <String>
 	* @access 	public
-	* @return 	Package\PHView\View
+	* @return 	Kit\PHView\View
 	*/
 	public function render($layout='', $view='') : View;
 
@@ -65,7 +65,7 @@ interface PHViewContract
 	*
 	* @param 	$view <String>
 	* @access 	public
-	* @return 	Package\View\Engines\PHView\View
+	* @return 	Kit\View\Engines\PHView\View
 	*/
 	public function setView(String $view) : View;
 
@@ -73,7 +73,7 @@ interface PHViewContract
 	* Get the view that is being rendered.
 	*
 	* @access 	public
-	* @return 	Package\View\Engines\PHView\View
+	* @return 	Kit\View\Engines\PHView\View
 	*/
 	public function getView();
 
@@ -81,7 +81,7 @@ interface PHViewContract
 	* Get the layout that is being rendered.
 	*
 	* @access 	public
-	* @return 	Package\View\Engines\PHView\View
+	* @return 	Kit\View\Engines\PHView\View
 	*/
 	public function getLayout();
 

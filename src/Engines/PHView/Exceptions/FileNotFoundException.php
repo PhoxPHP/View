@@ -1,5 +1,5 @@
 <?php
-namespace Package\View\Engines\PHView\Exceptions;
+namespace Kit\View\Engines\PHView\Exceptions;
 
 use Exception;
 

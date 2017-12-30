@@ -1,7 +1,8 @@
 <?php
-namespace Package\View\Engines\Lite\Mixins\Interfaces;
+namespace Kit\View\Engines\Lite\Mixins\Interfaces;
 
-interface MixinInterface {
+interface MixinInterface
+{
 
 	/**
 	* Registers a directive when true is being returned.

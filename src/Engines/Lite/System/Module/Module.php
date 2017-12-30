@@ -2,14 +2,15 @@
 #########################################
 # This file is part of phoxphp framework.
 #########################################
-namespace Package\View\Engines\Lite\System\Module;
+namespace Kit\View\Engines\Lite\System\Module;
 
-use Package\View\Engines\Lite\Exceptions\ModuleNotFoundException;
-use Package\View\Engines\Lite\System\Module\Builder;
-use Package\View\Engines\Lite\System\Module\Bag;
-use Package\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\System\Module\Bag;
+use Kit\View\Engines\Lite\System\Module\Builder;
+use Kit\View\Engines\Lite\Exceptions\ModuleNotFoundException;
 
-class Module {
+class Module
+{
 
 	/**
 	* @var 		$factory
@@ -58,7 +59,8 @@ class Module {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct(Factory $factory) {
+	public function __construct(Factory $factory)
+	{
 		$this->factory = $factory;
 		$this->builder = new Builder($this);
 	}
@@ -68,7 +70,8 @@ class Module {
 	* @access 	public
 	* @return 	void
 	*/
-	public function buildModules($module='') {
+	public function buildModules($module='') 
+	{
 		$this->builder->buildModule($module);
 	}
 
@@ -76,7 +79,8 @@ class Module {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getPath() {
+	public function getPath()
+	{
 		return $this->path;
 	}
 
@@ -84,7 +88,8 @@ class Module {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getTempName() {
+	public function getTempName()
+	{
 		return $this->name;
 	}
 
@@ -92,7 +97,8 @@ class Module {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getTempBody() {
+	public function getTempBody()
+	{
 		return $this->body;
 	}
 
@@ -100,22 +106,29 @@ class Module {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getTempArguments() {
+	public function getTempArguments()
+	{
 		return $this->arguments;
 	}
 
 	/**
-	* Checks if a module storage, file exists.
+	* Checks if a module storage file exists.
 	*
 	* @param 	$path <String>
 	* @access 	public
 	*/
-	public function storageExists($path='') {
+	public function storageExists($path='')
+	{
 		$storagePath = $this->factory->config('modules_path');
-		if (file_exists($storagePath.$path.'.module')) {
-			$this->path = $storagePath.$path.'.module';
+	
+		if (file_exists($storagePath . $path . '.module')) {
+	
+			$this->path = $storagePath . $path . '.module';
+	
 			return true;
+	
 		}
+	
 		return false;
 	}
 
@@ -125,17 +138,24 @@ class Module {
 	* @access 	public
 	* @return 	void
 	*/
-	public function findModule($module='', $path='') {
+	public function findModule($module='', $path='')
+	{
 		$moduleBag = new Bag();
 
 		$key = "/@map $module: \((.*?)\)(.*?)@end$module/s";
+	
 		$moduleSearch = preg_match_all($key, file_get_contents($path), $matches);
+	
 		if (!$moduleSearch) {
+	
 			throw new ModuleNotFoundException(sprintf("%s module does not exist", $module));
+	
 		}
 
 		$this->name = $module;
+	
 		$this->body = $matches[2][0];
+	
 		$this->arguments = explode(",", str_replace(' ', '', $matches[1][0]));
 
 		$moduleBag->pushModuleToStore($this);

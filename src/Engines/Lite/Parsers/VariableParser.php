@@ -2,14 +2,15 @@
 #########################################################
 # This file is part of phoxphp framework template files.
 #########################################################
-namespace Package\View\Engines\Lite\Parsers;
+namespace Kit\View\Engines\Lite\Parsers;
 
 use RuntimeException;
-use Package\View\Engines\Lite\Factory;
-use Package\View\Engines\Lite\Storage\Filters;
-use Package\View\Engines\Lite\Parsers\Interfaces\ParserInterface;
+use Kit\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\Storage\Filters;
+use Kit\View\Engines\Lite\Parsers\Interfaces\ParserInterface;
 
-class VariableParser implements ParserInterface {
+class VariableParser implements ParserInterface
+{
 
 	/**
 	* @var 		$factory
@@ -22,7 +23,8 @@ class VariableParser implements ParserInterface {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct(Factory $factory) {
+	public function __construct(Factory $factory)
+	{
 		$this->factory = $factory;
 	}
 
@@ -31,7 +33,8 @@ class VariableParser implements ParserInterface {
 	* @access 	private
 	* @return 	String
 	*/
-	private function toCleanStr($string='') {
+	private function toCleanStr($string='')
+	{
 		return str_replace(' ', '', $string);
 	}
 
@@ -42,22 +45,31 @@ class VariableParser implements ParserInterface {
 	* @access 	public
 	* @return 	String
 	*/
-	public function apply($string=null) {
+	public function apply($string=null)
+	{
 		$stringLength = strlen($string);
+	
 		$bufferedString = str_split($string);
+	
 		if (in_array($this->toCleanStr($string)[0], array("'", '"'))) {
+	
 			return $string;
+	
 		}
 
 		$cleanString = $this->toCleanStr($string);
 
 		if ($cleanString[0] !== '$' && $cleanString[strlen($cleanString) - 1] !== ')') {
+	
 			$string = "\$".$cleanString;
+	
 		}
 
 		// Convert dots to `this` pointer.
 		if (stripos($string, '.')) {
+	
 			$string = str_replace('.', '->', $string);
+	
 		}
 
 		return $string;

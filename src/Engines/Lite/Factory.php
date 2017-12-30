@@ -7,15 +7,16 @@
 * This file is part of phoxphp framework core files.
 * ##################################################
 */
-namespace Package\View\Engines\Lite;
+namespace Kit\View\Engines\Lite;
 
-use Package\View\Engines\Lite\Hooks\OnCompileStart;
-use Package\View\Engines\Lite\Compiler;
-use RuntimeException;
-use App\Config;
 use Exception;
+use App\Config;
+use RuntimeException;
+use Kit\View\Engines\Lite\Compiler;
+use Kit\View\Engines\Lite\Hooks\OnCompileStart;
 
-class Factory extends Config {
+class Factory extends Config
+{
 
 	/**
 	* @var 		$template
@@ -99,7 +100,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct($template='') {
+	public function __construct($template='')
+	{
 		$this->template = $template;
 	}
 
@@ -108,7 +110,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	self <Object>
 	*/
-	public static function instance($template='') {
+	public static function instance($template='')
+	{
 		return new self($template);
 	}
 
@@ -116,7 +119,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getRegisteredFunctions() {
+	public function getRegisteredFunctions()
+	{
 		return $this->config('registered_functions');
 	}
 
@@ -125,13 +129,18 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	Mixed
 	*/
-	public function config($option='') {
+	public function config($option='')
+	{
 		$config = $this->get('view.lite');
+
 		if (gettype($config) !== 'array') {
+		
 			throw new Exception(sprintf("Array expected from config. %s Returned.", gettype($config)));
+		
 		}
 
 		$config = (Object) $config;
+
 		return (isset($config->$option)) ? $config->$option : '';
 	}
 
@@ -139,10 +148,14 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	Boolean
 	*/
-	public function isCodeDisabled() {
+	public function isCodeDisabled()
+	{
 		if (boolval($this->config('disable_php_syntax')) == true) {
+		
 			return true;
+		
 		}
+
 		return false;
 	}
 
@@ -150,7 +163,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getTemplate() {
+	public function getTemplate()
+	{
 		return $this->template;
 	}
 
@@ -158,7 +172,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getTemplatePath() {
+	public function getTemplatePath()
+	{
 		return $this->config('template_path');
 	}
 
@@ -169,7 +184,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getTemplateRealPath($template='') {
+	public function getTemplateRealPath($template='')
+	{
 		$template = $this->getTemplatePath().'/'.$template.'.'.$this->getExtension();
 		return $template;
 	}
@@ -179,11 +195,16 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getTemplateContent($template='') {		
+	public function getTemplateContent($template='')
+	{
 		$path = $this->getTemplateRealPath($template);
+
 		if (!file_exists($path)) {
+		
 			throw new RuntimeException(sprintf("Unable to get template content in %s.", $path));
+		
 		}
+
 		return file_get_contents($path);
 	}
 
@@ -192,7 +213,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getTemplateBuild($template='') {
+	public function getTemplateBuild($template='')
+	{
 		return $this->getTemplatePath().'/'.$template.'.'.$this->getExtension();
 	}
 
@@ -200,7 +222,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getExtension() {
+	public function getExtension()
+	{
 		return $this->config('template_extension');
 	}
 
@@ -217,7 +240,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	String
 	*/
-	public function render($template='', $encode=false, $skipFileToString=false) {
+	public function render($template='', $encode=false, $skipFileToString=false)
+	{
 		$compilerHook = new OnCompileStart($this, $skipFileToString);
 		$compilerHook->runHookOn($template);
 		return $this->getCompiler($template, $encode, $skipFileToString)->render();
@@ -227,7 +251,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getDirective() {
+	public function getDirective()
+	{
 		return Factory::$DIRECTIVES;
 	}
 
@@ -236,7 +261,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getRenderedTemplates() {
+	public function getRenderedTemplates()
+	{
 		return Factory::$loadedTemplates;
 	}
 
@@ -244,7 +270,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getLayout() {
+	public function getLayout()
+	{
 		return $this->layout;
 	}
 
@@ -255,7 +282,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getLoadedDirectives() {
+	public function getLoadedDirectives()
+	{
 		return $this->config('directives');
 	}
 
@@ -266,7 +294,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getLoadedFilters() {
+	public function getLoadedFilters()
+	{
 		return $this->config('directive_filters');
 	}
 
@@ -278,7 +307,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	void
 	*/
-	public function setVariable($variable='', $value='') {
+	public function setVariable($variable='', $value='')
+	{
 		Factory::$templateVariablesStore[$variable] = $value;
 	}
 
@@ -289,7 +319,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	Mixed
 	*/
-	public function getVariable($variable='') {
+	public function getVariable($variable='')
+	{
 		return (!isset(Factory::$templateVariablesStore[$variable])) ? null : Factory::$templateVariablesStore[$variable];
 	}
 
@@ -299,7 +330,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	Array
 	*/
-	public static function getAllVariables() {
+	public static function getAllVariables()
+	{
 		return Factory::$templateVariablesStore;
 	}
 
@@ -312,11 +344,16 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	void
 	*/
-	public function pushToTemplateTree($template='', $key='', $value='') {
+	public function pushToTemplateTree($template='', $key='', $value='')
+	{
 		if (isset(Factory::$templateTree[$template][$key])) {
+
 			Factory::$templateTree[$template][$key][] = $value;
+			
 			return true;
+		
 		}
+
 		Factory::$templateTree[$template][$key] = $value;
 	}
 
@@ -327,7 +364,8 @@ class Factory extends Config {
 	* @access 	public
 	* @return 	Mixed
 	*/
-	public function getTemplateTree($template='') {
+	public function getTemplateTree($template='')
+	{
 		return (isset(Factory::$templateTree[$template])) ? Factory::$templateTree[$template] : null;
 	}
 
@@ -340,7 +378,8 @@ class Factory extends Config {
 	* @access 	protected
 	* @return 	Object
 	*/
-	protected function getCompiler($template, $encode=false, $skipFileToString=false) : Compiler {
+	protected function getCompiler($template, $encode=false, $skipFileToString=false) : Compiler
+	{
 		return new Compiler($this, $template, $encode, $skipFileToString);
 	}
 

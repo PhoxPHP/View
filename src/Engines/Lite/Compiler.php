@@ -2,13 +2,14 @@
 ########################################################
 # This file is part of phoxphp framework template files.
 ########################################################
-namespace Package\View\Engines\Lite;
+namespace Kit\View\Engines\Lite;
 
 use RuntimeException;
-use Package\View\Engines\Lite\Factory;
-use Package\View\Engines\Lite\System\Module\Module;
+use Kit\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\System\Module\Module;
 
-class Compiler {
+class Compiler
+{
 
 	/**
 	* @var 		$factory
@@ -72,16 +73,21 @@ class Compiler {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct(Factory $factory, $template='', $encode=false, $skipFileToString=false) {
+	public function __construct(Factory $factory, $template='', $encode=false, $skipFileToString=false)
+	{
 		$this->factory = $factory;
 		$this->template = $template;
 		$this->transferEncoded = $encode;
 		$this->skipFileToString = $skipFileToString;
 
 		if ($skipFileToString == false) {
+
 			$this->templateRealPath = $templatePath = $this->factory->getTemplateBuild($this->template);
+			
 			if (!file_exists($templatePath)) {
+			
 				throw new RuntimeException(sprintf('Unable to load template %s', $templatePath));
+			
 			}
 		}
 	}
@@ -90,27 +96,38 @@ class Compiler {
 	* @access 	public
 	* @return 	Mixed
 	*/
-	public function render() {
+	public function render()
+	{
 		$directives = $this->resolveDirectives();
+
 		if (boolval(Compiler::$evaluateDefault) == true) {
+		
 			return;
+		
 		}
 
 		$variables = Factory::getAllVariables();
+
 		foreach(array_keys($variables) as $varKey) {
+		
 			$$varKey = $variables[$varKey];
+		
 		}
 
 		$directivesArray = [];
 
 		$template = ($this->skipFileToString == true) ? $this->template : $this->factory->getTemplateContent($this->template);
+
 		$compiled = str_replace(array_keys(Compiler::$compiledOutput), array_values(Compiler::$compiledOutput), $template);
 
 		if (boolval($this->transferEncoded) == true) {
+
 			return $compiled;
+		
 		}
 
 		$command = html_entity_decode($compiled);
+
 		eval("?> $command <?php ");
 
 	}
@@ -121,7 +138,8 @@ class Compiler {
 	* @access 	public
 	* @return 	void
 	*/
-	public static function addCustomOutput($raw='', $compiled='') {
+	public static function addCustomOutput($raw='', $compiled='')
+	{
 		Compiler::$compiledOutput[$raw] = $compiled;
 	}
 
@@ -130,10 +148,14 @@ class Compiler {
 	* @access 	public
 	* @return 	Boolean
 	*/
-	public static function isQueued($raw='') {
+	public static function isQueued($raw='')
+	{
 		if (isset(Compiler::$compiledOutput[$raw])) {
+
 			return true;
+		
 		}
+
 		return false;
 	}
 
@@ -143,7 +165,8 @@ class Compiler {
 	* @access 	public
 	* @return 	void
 	*/
-	public static function appendBlock($block='', $template='') {
+	public static function appendBlock($block='', $template='')
+	{
 		Compiler::$blocks[$block] = ['template' => $template];
 	}
 
@@ -152,7 +175,8 @@ class Compiler {
 	* @access 	public
 	* @return 	String
 	*/
-	public static function getBlock($block='') {
+	public static function getBlock($block='')
+	{
 		return (isset(Compiler::$blocks[$block])) ? Compiler::$blocks[$block] : null;
 	}
 
@@ -162,26 +186,38 @@ class Compiler {
 	* @access 	protected
 	* @return 	void
 	*/
-	protected function resolveDirectives() {
+	protected function resolveDirectives()
+	{
 		if (empty($this->factory->getLoadedDirectives())) {
+
 			return Compiler::$evaluateDefault = true;
+		
 		}
 
 		$directiveOutput = [];
 		array_map(function($directive) use ($directiveOutput) {
-			$namespace = 'Package\\View\\Engines\\Lite\\Mixins\\';
+
+			$namespace = 'Kit\\View\\Engines\\Lite\\Mixins\\';
 			$mixinClass = $namespace.ucfirst($directive).'Mixin';
+			
 			if (!class_exists($mixinClass)) {
+			
 				throw new RuntimeException(sprintf("Mixin object %s not found.", $mixinClass));
+			
 			}
 
 			$mixinClass = new $mixinClass($this->factory, $this->template, $this->skipFileToString);
+
 			if (boolval($mixinClass->register()) == false) {
+			
 				return;
+			
 			}
 
 			if (!empty($mixinClass->getOutput())) {
+
 				Compiler::$compiledOutput[] = $mixinClass->getOutput();
+			
 			}
 
 		}, $this->factory->getLoadedDirectives());

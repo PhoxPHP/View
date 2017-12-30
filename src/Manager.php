@@ -1,9 +1,10 @@
 <?php
-namespace Package\View;
+namespace Kit\View;
 
-use Package\DependencyInjection\Injector\InjectorBridge;
+use Kit\DependencyInjection\Injector\InjectorBridge;
 
-class Manager extends InjectorBridge {
+class Manager extends InjectorBridge
+{
 
 	/**
 	* @var 		$engine
@@ -18,7 +19,8 @@ class Manager extends InjectorBridge {
 	* @access 	public
 	* @return 	Object
 	*/
-	public function getEngine() {
+	public function getEngine()
+	{
 		$engine = $this->load('config')->get('view', 'engine');
 		return new $engine();
 	}

@@ -1,11 +1,12 @@
 <?php
-namespace Package\View\Engines\Lite\Hooks;
+namespace Kit\View\Engines\Lite\Hooks;
 
 use RuntimeException;
-use Package\View\Engines\Lite\Formatter;
-use Package\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\Formatter;
 
-class OnCompileStart {
+class OnCompileStart
+{
 
 	/**
 	* @var 		$factory
@@ -25,7 +26,8 @@ class OnCompileStart {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct(Factory $factory, $skipFileToString=false) {
+	public function __construct(Factory $factory, $skipFileToString=false)
+	{
 		$this->factory = $factory;
 		$this->skipFileToString = $skipFileToString;
 	}
@@ -36,7 +38,8 @@ class OnCompileStart {
 	* @throws 	RuntimeException
 	* @return 	void
 	*/
-	public function runHookOn($template='') {
+	public function runHookOn($template='')
+	{
 		$this->checkSyntaxCode($template);
 	}
 
@@ -46,13 +49,18 @@ class OnCompileStart {
 	* @throws 	RuntimeException
 	* @return 	void
 	*/
-	private function checkSyntaxCode($template='') {
+	private function checkSyntaxCode($template='')
+	{
 		$templateContent = ($this->skipFileToString == true) ? $template : $this->factory->getTemplateContent($template);
+	
 		$disableDefaultCode = $this->factory->isCodeDisabled();
+	
 		$preg = preg_match("/<\?php(.*?)\?>/s", $templateContent);
 
 		if ($preg && boolval($disableDefaultCode) == true) {
+	
 			throw new RuntimeException("PHP syntax detected in template.");
+	
 		}
 	}
 
