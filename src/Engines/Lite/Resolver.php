@@ -1,9 +1,10 @@
 <?php
-namespace Package\View\Engines\Lite;
+namespace Kit\View\Engines\Lite;
 
 use Lite\Exceptions\InvalidArgumentQuotesException;
 
-class Resolver {
+class Resolver
+{
 
 	/**
 	* @var 		$accessList
@@ -23,9 +24,12 @@ class Resolver {
 	* @access 	public
 	* @return 	void
 	*/
-	public static function resolveQuotes($leftQuote='', $rightQuote='') {
+	public static function resolveQuotes($leftQuote='', $rightQuote='')
+	{
 		if ($leftQuote !== $rightQuote) {
+	
 			throw new InvalidArgumentQuotesException(sprintf("Unable to parse arguments with left quote {%s} and right quote {%s}", $leftQuote, $rightQuote));
+	
 		}
 	}
 

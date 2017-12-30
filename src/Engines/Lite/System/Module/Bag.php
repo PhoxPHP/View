@@ -2,11 +2,12 @@
 #########################################
 # This file is part of phoxphp framework.
 #########################################
-namespace Package\View\Engines\Lite\System\Module;
+namespace Kit\View\Engines\Lite\System\Module;
 
-use Package\View\Engines\Lite\System\Module as ViewModule;
+use Kit\View\Engines\Lite\System\Module as ViewModule;
 
-class Bag {
+class Bag
+{
 
 	/**
 	* @var 		$modules
@@ -24,7 +25,8 @@ class Bag {
 	* @access 	public
 	* @return 	void
 	*/
-	public function pushModuleToStore(ViewModule $module) {
+	public function pushModuleToStore(ViewModule $module)
+	{
 		$name = $module->getTempName();
 		$body = $module->getTempBody();
 		$arguments = $module->getTempArguments();
@@ -37,7 +39,8 @@ class Bag {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getModules($object=false) {
+	public function getModules($object=false)
+	{
 		return ($object == true) ? (Object)Bag::$modules : Bag::$modules;
 	}
 
@@ -47,10 +50,14 @@ class Bag {
 	* @access 	public
 	* @return 	Boolean
 	*/
-	public static function moduleExists($module='') {
+	public static function moduleExists($module='')
+	{
 		if (isset(Bag::$modules[$module])) {
+	
 			return true;
+	
 		}
+	
 		return false;
 	}
 
@@ -59,9 +66,12 @@ class Bag {
 	* @access 	public
 	* @return 	void
 	*/
-	public function removeModule($module='') {
+	public function removeModule($module='')
+	{
 		if (isset($this->modules[$module])) {
+	
 			unset($this->modules[$module]);
+	
 		}
 	}
 

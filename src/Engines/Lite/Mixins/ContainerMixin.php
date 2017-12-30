@@ -2,14 +2,15 @@
 ########################################################
 # This file is part of phoxphp framework template files.
 ########################################################
-namespace Package\View\Engines\Lite\Mixins;
+namespace Kit\View\Engines\Lite\Mixins;
 
-use Package\View\Engines\Lite\Factory;
-use Package\View\Engines\Lite\Compiler;
-use Package\View\Engines\Lite\Parsers\FilterParser;
-use Package\View\Engines\Lite\Mixins\Interfaces\MixinInterface;
+use Kit\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\Compiler;
+use Kit\View\Engines\Lite\Parsers\FilterParser;
+use Kit\View\Engines\Lite\Mixins\Interfaces\MixinInterface;
 
-class ContainerMixin implements MixinInterface {
+class ContainerMixin implements MixinInterface
+{
 
 	/**
 	* @var 		$factory
@@ -48,7 +49,8 @@ class ContainerMixin implements MixinInterface {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct(Factory $factory, $template, $skipFileToString=false) {
+	public function __construct(Factory $factory, $template, $skipFileToString=false)
+	{
 		$this->factory = $factory;
 		$this->template = $template;
 		$this->skipFileToString = $skipFileToString;
@@ -58,7 +60,8 @@ class ContainerMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Boolean
 	*/
-	public function register() {
+	public function register()
+	{
 		return true;
 	}
 
@@ -66,7 +69,8 @@ class ContainerMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Object
 	*/
-	protected function filter() : FilterParser {
+	protected function filter() : FilterParser
+	{
 		return new FilterParser($this->factory);
 	}
 
@@ -76,12 +80,18 @@ class ContainerMixin implements MixinInterface {
 	* @access 	protected
 	* @return 	Boolean
 	*/
-	protected function hasContainer($template='') {
+	protected function hasContainer($template='')
+	{
 		$template = ($this->skipFileToString == true) ? $this->template : $this->factory->getTemplateContent($this->template);
+		
 		if (!preg_match_all("/@container\(\"(.*?)\"\)/s", $template, $matches)) {
+		
 			return false;
+		
 		}
+
 		$this->containers = $matches;
+		
 		return true;
 	}
 
@@ -89,18 +99,27 @@ class ContainerMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getOutput() {
+	public function getOutput()
+	{
 		$compiledArray = array();
 		$containerData = array();
+	
 		if ($this->hasContainer()) {
+		
 			foreach($this->containers[0] as $i => $directive) {
+		
 				$label = $this->containers[1][$i];
+		
 				$containerData['labels'][] = $label;
+		
 				$containerData['directives'][] = $directive;
 
 				$this->factory->pushToTemplateTree('global', 'container:data', $containerData);
+			
 			}
+			
 		}
+
 		return $compiledArray;
 	}
 

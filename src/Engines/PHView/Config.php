@@ -1,12 +1,12 @@
 <?php
 /**
-* @package 	Package\View\Engines\PHView\Layout
+* @package 	Kit\View\Engines\PHView\Layout
 * @author 	Peter Taiwo
 */
 
-namespace Package\View\Engines\PHView;
+namespace Kit\View\Engines\PHView;
 
-use Package\View\Engines\PHView\Exceptions\FileNotFoundException;
+use Kit\View\Engines\PHView\Exceptions\FileNotFoundException;
 
 class Config
 {
@@ -28,7 +28,9 @@ class Config
 	{
 		$configFile = 'public/config/view.phview.php';
 		if (!file_exists($configFile)) {
+
 			throw new FileNotFoundException(sprintf("File %s does not exist.", $configFile));
+		
 		}
 
 		$configFile = include $configFile;

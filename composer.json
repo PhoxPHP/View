@@ -14,7 +14,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"PhoxPHP\\View\\": "src"
+			"Kit\\View\\": "src"
 		}
 	}
 }

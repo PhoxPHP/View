@@ -1,7 +1,8 @@
 <?php
-namespace Package\View\Engines\Lite\Storage;
+namespace Kit\View\Engines\Lite\Storage;
 
-class Filters {
+class Filters
+{
 
 	// Template filters go in here.....
 
@@ -10,7 +11,8 @@ class Filters {
 	* @access 	public
 	* @return 	String
 	*/
-	public function toLower($string) {
+	public function toLower($string)
+	{
 		return strtolower($string);
 	}
 
@@ -19,7 +21,8 @@ class Filters {
 	* @access 	public
 	* @return 	String
 	*/
-	public function toUpper($string) {
+	public function toUpper($string)
+	{
 		return strtoupper($string);
 	}
 

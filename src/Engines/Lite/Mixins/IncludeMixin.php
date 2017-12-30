@@ -2,14 +2,15 @@
 ########################################################
 # This file is part of phoxphp framework template files.
 ########################################################
-namespace Package\View\Engines\Lite\Mixins;
+namespace Kit\View\Engines\Lite\Mixins;
 
 use RuntimeException;
-use Package\View\Engines\Lite\Factory;
-use Package\View\Engines\Lite\Compiler;
-use Package\View\Engines\Lite\Mixins\Interfaces\MixinInterface;
+use Kit\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\Compiler;
+use Kit\View\Engines\Lite\Mixins\Interfaces\MixinInterface;
 
-class IncludeMixin implements MixinInterface {
+class IncludeMixin implements MixinInterface
+{
 
 	/**
 	* @var 		$factory
@@ -40,7 +41,8 @@ class IncludeMixin implements MixinInterface {
 	* @param 	$template <String>
 	* @access 	public
 	*/
-	public function __construct(Factory $factory, $template, $skipFileToString=false) {
+	public function __construct(Factory $factory, $template, $skipFileToString=false)
+	{
 		$this->factory = $factory;
 		$this->template = $template;
 		$this->skipFileToString = $skipFileToString;
@@ -50,7 +52,8 @@ class IncludeMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Boolean
 	*/
-	public function register() {
+	public function register()
+	{
 		return true;
 	}
 
@@ -58,13 +61,21 @@ class IncludeMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Boolean
 	*/
-	protected function hasInclude() {
+	protected function hasInclude()
+	{
+	
 		$template = ($this->skipFileToString == true) ? $this->template : $this->factory->getTemplateContent($this->template);
+	
 		$preg = preg_match_all("/@include\(\'(.*?)\'\)/", $template, $matches);
+	
 		if (!$preg) {
+	
 			return false;
+	
 		}
+	
 		$this->directives = $matches;
+	
 		return true;
 	}
 
@@ -72,18 +83,26 @@ class IncludeMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getOutput() {
+	public function getOutput()
+	{
 		$compiledArray = array();
+	
 		if ($this->hasInclude()) {
+	
 			foreach($this->directives[0] as $io => $output) {
+	
 				$templateFile = $this->directives[1][$io];
+	
 				if (!file_exists($this->factory->getTemplateBuild($templateFile))) {
+	
 					throw new RuntimeException(sprintf("Compile error. %s template not found.", $templateFile));
+	
 				}
 
 				Compiler::addCustomOutput($output, $this->factory->render($templateFile, true));
 			}
 		}
+		
 		return $compiledArray;
 	}
 

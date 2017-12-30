@@ -4,16 +4,16 @@
 * @author 	Peter Taiwo
 */
 
-namespace Package\View\Engines\PHView;
+namespace Kit\View\Engines\PHView;
 
 use RuntimeException;
-use Package\View\Engines\PHView\Config;
-use Package\View\Engines\PHView\Layout;
-use Package\View\Engines\PHView\Repository;
-use Package\View\Engines\PHView\Block\Block;
-use Package\View\Engines\PHView\Renderer\Renderer;
-use Package\View\Engines\PHView\Contracts\PHViewContract;
-use Package\View\Engines\PHView\Exceptions\FileNotFoundException;
+use Kit\View\Engines\PHView\Config;
+use Kit\View\Engines\PHView\Layout;
+use Kit\View\Engines\PHView\Repository;
+use Kit\View\Engines\PHView\Block\Block;
+use Kit\View\Engines\PHView\Renderer\Renderer;
+use Kit\View\Engines\PHView\Contracts\PHViewContract;
+use Kit\View\Engines\PHView\Exceptions\FileNotFoundException;
 
 class View implements PHViewContract
 {
@@ -116,12 +116,16 @@ class View implements PHViewContract
 		if (sizeof(array_keys($this->variables)) > 0) {
 			// We will only parse variables if any variable has been added.
 			foreach(array_keys($this->variables) as $variable) {
+
 				$$variable = $this->variables[$variable];
+			
 			}
 		}
 
 		if ($layout !== '') {
+
 			$this->layout = $layout;
+		
 		}
 
 		if ($view !== '') {
@@ -129,28 +133,41 @@ class View implements PHViewContract
 		}
 
 		$repositoryDirectory = Config::get('repository_directory');
+
 		$repository = new Repository($this);
 
 		if (!$repository->hasLayouts()) {
+
 			throw new FileNotFoundException(sprintf('Directory %s does not exist.', $repositoryDirectory . 'layouts'));
+		
 		}
 
 		if (!$repository->hasViews()) {
+		
 			throw new FileNotFoundException(sprintf('Directory %s does not exist.', $repositoryDirectory . 'views'));
+		
 		}
 
 		if ($this->view !== null && $this->view !== '') {
+		
 			$viewFile = $repository->getViewsPathWith($this->view, Config::get('extension'), true);
+		
 			$viewOutput = file_get_contents($viewFile);
+		
 			$this->content = $viewOutput;
 
 			if ($this->layout == null || $this->layout == '') {
+		
 				eval("?> $viewOutput <?php ");
+		
 			}
+		
 		}
 
 		if ($this->layout !== null && $this->layout !== '' && $this->view !== null && $this->view !== '') {
+		
 			$layoutFile = $repository->getLayoutsPathWith($this->layout, Config::get('extension'), true);
+		
 			$layoutOutput = file_get_contents($layoutFile);
 
 			eval("?> $layoutOutput <?php ");
@@ -165,10 +182,13 @@ class View implements PHViewContract
 	public function setLayout($layout) : View
 	{
 		if (gettype($layout) !== 'string' || !$layout instanceof Layout) {
+			
 			throw new RuntimeException('Layout can either be string or instance of PHView\\Layout');
+		
 		}
 
 		$this->layout = $layout;
+
 		return $this;
 	}
 
@@ -224,13 +244,19 @@ class View implements PHViewContract
 	protected function partial(String $partial, Array $variables=[])
 	{
 		if (sizeof(array_keys($variables)) > 0) {
+
 			foreach(array_keys($variables) as $variable) {
+			
 				$$variable = $variables[$variable];
+			
 			}
+		
 		}
 
 		$repository = new Repository($this);
+		
 		$partialFile = $repository->getPartialsPathWith($partial, Config::get('extension'), true);
+		
 		$partialOutput = file_get_contents($partialFile);
 
 		eval("?> $partialOutput <?php ");

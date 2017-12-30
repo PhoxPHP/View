@@ -1,7 +1,8 @@
 <?php
-namespace Package\View;
+namespace Kit\View;
 
-abstract class ArgResolver {
+abstract class ArgResolver
+{
 
 	const 		DS = DIRECTORY_SEPARATOR;
 
@@ -10,7 +11,8 @@ abstract class ArgResolver {
 	* @access 	public
 	* @return 	String
 	*/
-	public static function getResolvedTemplatePath($template='') {
+	public static function getResolvedTemplatePath($template='')
+	{
 		$path = str_replace('.', ArgResolver::DS, $template);
 		return htmlFile($path);
 	}
@@ -20,7 +22,8 @@ abstract class ArgResolver {
 	* @access 	public
 	* @return 	String
 	*/
-	public static function getResolvedScriptPath($script='') {
+	public static function getResolvedScriptPath($script='')
+	{
 		$path = str_replace('.', ArgResolver::DS, $script);
 		return phpFile($path);
 	}

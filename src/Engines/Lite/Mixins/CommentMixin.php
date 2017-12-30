@@ -2,14 +2,15 @@
 ########################################################
 # This file is part of phoxphp framework template files.
 ########################################################
-namespace Package\View\Engines\Lite\Mixins;
+namespace Kit\View\Engines\Lite\Mixins;
 
-use Package\View\Engines\Lite\Mixins\Interfaces\MixinInterface;
-use Package\View\Engines\Lite\Parsers\FilterParser;
-use Package\View\Engines\Lite\Compiler\Compiler;
-use Package\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\Compiler\Compiler;
+use Kit\View\Engines\Lite\Parsers\FilterParser;
+use Kit\View\Engines\Lite\Mixins\Interfaces\MixinInterface;
 
-class CommentMixin implements MixinInterface {
+class CommentMixin implements MixinInterface
+{
 
 	/**
 	* @var 		$factory
@@ -42,7 +43,8 @@ class CommentMixin implements MixinInterface {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct(Factory $factory, $template, $skipFileToString=false) {
+	public function __construct(Factory $factory, $template, $skipFileToString=false)
+	{
 		$this->factory = $factory;
 		$this->template = $template;
 		$this->skipFileToString = $skipFileToString;
@@ -52,7 +54,8 @@ class CommentMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Boolean
 	*/
-	public function register() {
+	public function register()
+	{
 		return true;
 	}
 
@@ -60,7 +63,8 @@ class CommentMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Object
 	*/
-	protected function filter() : FilterParser {
+	protected function filter() : FilterParser
+	{
 		return new FilterParser($this->factory);
 	}
 
@@ -68,14 +72,20 @@ class CommentMixin implements MixinInterface {
 	* @access 	protected
 	* @return 	Boolean
 	*/
-	protected function hasOutput() {
+	protected function hasOutput()
+	{
 		$template = ($this->skipFileToString == true) ? $this->template : $this->factory->getTemplateContent($this->template);
 
 		$preg = preg_match_all("/{#(.*?)#}/", $template, $matches);
+	
 		if (!$preg) {
+	
 			return false;
+	
 		}
+
 		$this->directives = $matches;
+
 		return true;
 	}
 
@@ -84,7 +94,8 @@ class CommentMixin implements MixinInterface {
 	* @access 	protected
 	* @return 	String
 	*/
-	protected function read($variable='') {
+	protected function read($variable='')
+	{
 		$filteredOutput = $this->filter()->getFilteredResult($variable);
 		return '<?php /*'.$filteredOutput.'; */ ?>';
 	}
@@ -93,12 +104,18 @@ class CommentMixin implements MixinInterface {
 	* @access 	public
 	* @return 	Array
 	*/
-	public function getOutput() {
+	public function getOutput()
+	{
 		$compiledArray = array();
+
 		if ($this->hasOutput()) {
+		
 			foreach($this->directives[0] as $i => $directive) {
+		
 				Compiler::addCustomOutput($directive, $this->factory->render($this->read($this->directives[1][$i]), true, true));
+		
 			}
+		
 		}
 		return $compiledArray;
 	}

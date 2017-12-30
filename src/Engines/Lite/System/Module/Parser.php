@@ -2,14 +2,15 @@
 #########################################
 # This file is part of phoxphp framework.
 #########################################
-namespace Package\View\Engines\Lite\System\Module;
+namespace Kit\View\Engines\Lite\System\Module;
 
-use RuntimeException;
 use StdClass;
-use Package\View\Engines\Lite\Factory;
-use Package\View\Engines\Lite\System\Module\Bag;
+use RuntimeException;
+use Kit\View\Engines\Lite\Factory;
+use Kit\View\Engines\Lite\System\Module\Bag;
 
-class Parser {
+class Parser
+{
 
 	/**
 	* @var 		$moduleFunction
@@ -48,7 +49,8 @@ class Parser {
 	* @access 	public
 	* @return 	void
 	*/
-	public function __construct(Factory $factory, Bag $moduleBag, StdClass $moduleFunction) {
+	public function __construct(Factory $factory, Bag $moduleBag, StdClass $moduleFunction)
+	{
 		$this->moduleBag = $moduleBag;
 		$this->moduleFunction = $moduleFunction;
 		$this->factory = $factory;
@@ -60,12 +62,18 @@ class Parser {
 	* @access 	private
 	* @return 	Boolean
 	*/
-	private function hasArgumentTags($string='') {
+	private function hasArgumentTags($string='')
+	{
 		$preg = preg_match_all("/\[(.*)\]/", $string, $matches);
+	
 		if (!$preg) {
+	
 			return false;
+	
 		}
+	
 		$this->argumentTags = $matches;
+	
 		return true;
 	}
 
@@ -73,28 +81,44 @@ class Parser {
 	* @access 	public
 	* @return 	void
 	*/
-	public function parse() {
+	public function parse()
+	{
 		$mergedArguments = array();
+	
 		$module = $this->moduleFunction->module;
+	
 		$moduleFunctionArguments = $this->moduleFunction->arguments;
+	
 		$moduleMap = (Object) $this->moduleBag->getModules(true)->$module; // Object of registered/mapped module...
+	
 		// Merging stored module arguments and the called module arguments...
 		$mergedArguments = array_combine(array_map(function($argument) {
+	
 			return "[$argument]";
+	
 		}, $moduleMap->arguments), $moduleFunctionArguments);
+	
 		$body = $moduleMap->body;
 
 		// If the module body has arguments, we will check if the arguments are defined...
 		if($this->hasArgumentTags($body)) {
+	
 			array_map(function($argument) use ($mergedArguments, $module) {
+	
 				if (!isset($mergedArguments[$argument])) {
+	
 					throw new RuntimeException(sprintf("Invalid argument count in %s module", $module));
+	
 				}
+	
 			}, $this->argumentTags[0]);
+	
 		}
 
 		if (!empty($mergedArguments)) {
+
 			$body = str_replace(array_keys($mergedArguments), array_values($mergedArguments), $moduleMap->body);
+		
 		}
 
 		$this->parsedString = $body;
@@ -104,7 +128,8 @@ class Parser {
 	* @access 	public
 	* @return 	String
 	*/
-	public function getParseResult() {
+	public function getParseResult()
+	{
 		return $this->parsedString;
 	}
 
