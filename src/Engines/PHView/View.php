@@ -181,6 +181,8 @@ class View implements PHViewContract
 			if ($this->layout == null || $this->layout == '') {
 		
 				eval("?> $viewOutput <?php ");
+
+				return $this;
 		
 			}
 		
